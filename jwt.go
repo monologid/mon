@@ -7,7 +7,11 @@ import (
 )
 
 type IJwt interface {
+	// Encrypt returns encrypted json web token
 	Encrypt(data jwt.MapClaims) (string, error)
+
+	// Decrypt returns map-claim after successfully parses and validate json web token
+	// based on secret and signing method
 	Decrypt(token string) (jwt.MapClaims, error)
 }
 
