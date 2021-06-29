@@ -1,9 +1,10 @@
 package mon_test
 
 import (
+	"testing"
+
 	"github.com/monologid/mon"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestNewJwt_EncryptDecryptShouldReturnSuccess(t *testing.T) {

@@ -2,8 +2,9 @@ package mon
 
 import (
 	"errors"
-	"github.com/dgrijalva/jwt-go"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
 type IJwt interface {
@@ -16,7 +17,7 @@ type IJwt interface {
 }
 
 type Jwt struct {
-	Secret string
+	Secret        string
 	SigningMethod string
 }
 
@@ -48,7 +49,7 @@ func (j *Jwt) Decrypt(tokenStr string) (jwt.MapClaims, error) {
 
 func NewJwt(secret string, signingMethod string) IJwt {
 	return &Jwt{
-		Secret: secret,
+		Secret:        secret,
 		SigningMethod: signingMethod,
 	}
 }
