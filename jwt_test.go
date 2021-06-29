@@ -3,7 +3,7 @@ package mon_test
 import (
 	"testing"
 
-	"github.com/monologid/mon"
+	"github.com/monologid/mon-go"
 	"github.com/stretchr/testify/assert"
 )
 

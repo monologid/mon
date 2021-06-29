@@ -1,4 +1,4 @@
-module github.com/monologid/mon
+module github.com/monologid/mon-go
 
 go 1.16
 
