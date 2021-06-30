@@ -17,9 +17,6 @@ type IHasura interface {
 	// Struct with json tag
 	SetResponseModel(model interface{}) IHasura
 
-	// ReadGqlFile sets grapqhl query by reading .gql or .graphql file
-	ReadGqlFile(filepath string) error
-
 	// Exec returns nil if calling graphql API returns success
 	Exec(queryType string, variables interface{}, headers map[string]string) error
 }
@@ -46,15 +43,6 @@ func (h *Hasura) SetResponseKey(key string) IHasura {
 func (h *Hasura) SetResponseModel(model interface{}) IHasura {
 	h.ResponseModel = model
 	return h
-}
-
-func (h *Hasura) ReadGqlFile(filepath string) error {
-	file, err := ioutil.ReadFile(filepath)
-	if err != nil {
-		return err
-	}
-	h.Query = string(file)
-	return nil
 }
 
 func (h *Hasura) Exec(queryType string, variables interface{}, headers map[string]string) error {
@@ -121,9 +109,19 @@ type HasuraResponseSchema struct {
 	Errors interface{} `json:"errors,omitempty"`
 }
 
-func NewHasura(graphqlURL string, secret string) IHasura {
-	return &Hasura{
+// NewHasura initiates hasura client object
+// @params filepath set the .gql file
+func NewHasura(graphqlURL string, secret string, filepath string) (IHasura, error) {
+	h := &Hasura{
 		GraphqlURL: graphqlURL,
 		Secret:     secret,
 	}
+
+	file, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return nil, err
+	}
+	h.Query = string(file)
+
+	return h, nil
 }
