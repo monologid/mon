@@ -35,7 +35,6 @@ func NewEcho() IEcho {
 
 	e.App.Use(middleware.Logger())
 	e.App.Use(middleware.Recover())
-	e.App.Use(middleware.CSRF())
 	e.App.Use(middleware.Secure())
 
 	prom := prometheus.NewPrometheus("echo", nil)
