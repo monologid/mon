@@ -46,7 +46,7 @@ func (h *Hasura) SetResponseModel(model interface{}) IHasura {
 }
 
 func (h *Hasura) Exec(queryType string, variables interface{}, headers map[string]string) error {
-	if queryType != HasuraTypeQuery || queryType != HasuraTypeMutation {
+	if queryType != HasuraTypeQuery && queryType != HasuraTypeMutation {
 		return errors.New("invalid hasura query type")
 	}
 
