@@ -18,13 +18,8 @@ type IHasura interface {
 	SetResponseModel(model interface{}) IHasura
 
 	// Exec returns nil if calling graphql API returns success
-	Exec(queryType string, variables interface{}, headers map[string]string) error
+	Exec(variables interface{}, headers map[string]string) error
 }
-
-var (
-	HasuraTypeQuery    = "QUERY"
-	HasuraTypeMutation = "MUTATION"
-)
 
 type Hasura struct {
 	GraphqlURL string
@@ -45,11 +40,7 @@ func (h *Hasura) SetResponseModel(model interface{}) IHasura {
 	return h
 }
 
-func (h *Hasura) Exec(queryType string, variables interface{}, headers map[string]string) error {
-	if queryType != HasuraTypeQuery && queryType != HasuraTypeMutation {
-		return errors.New("invalid hasura query type")
-	}
-
+func (h *Hasura) Exec(variables interface{}, headers map[string]string) error {
 	body := make(map[string]interface{})
 	body["query"] = h.Query
 	body["variables"] = variables
@@ -83,15 +74,7 @@ func (h *Hasura) Exec(queryType string, variables interface{}, headers map[strin
 		return errors.New("something went wrong when calling hasura")
 	}
 
-	var values interface{}
-	var ok bool
-
-	if queryType == HasuraTypeQuery {
-		values, ok = response.Data.(map[string]interface{})[h.ResponseKey]
-	} else if queryType == HasuraTypeMutation {
-		values, ok = response.Data.(map[string]interface{})[h.ResponseKey].(map[string]interface{})["returning"]
-	}
-
+	values, ok := response.Data.(map[string]interface{})[h.ResponseKey]
 	if !ok {
 		return errors.New("failed to parse response from hasura")
 	}
