@@ -73,6 +73,9 @@ func (h *Hasura) Exec(queryType string, variables interface{}, headers map[strin
 
 	client := resty.New()
 	req := client.R().SetHeader("Content-Type", "application/json")
+	if h.Secret != "" {
+		req = req.SetHeader("x-hasura-admin-secret", h.Secret)
+	}
 	for key, value := range headers {
 		req = req.SetHeader(key, value)
 	}
